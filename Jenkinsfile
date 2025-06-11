@@ -574,16 +574,16 @@ pipeline {
         sh "docker buildx build \
           --label \"org.opencontainers.image.created=${GITHUB_DATE}\" \
           --label \"org.opencontainers.image.authors=linuxserver.io\" \
-          --label \"org.opencontainers.image.url=https://github.com/linuxserver/docker-google-chrome/packages\" \
-          --label \"org.opencontainers.image.documentation=https://docs.linuxserver.io/images/docker-google-chrome\" \
-          --label \"org.opencontainers.image.source=https://github.com/linuxserver/docker-google-chrome\" \
+          --label \"org.opencontainers.image.url=https://github.com/linuxserver/${LS_REPO}/packages\" \
+          --label \"org.opencontainers.image.documentation=https://docs.linuxserver.io/images/${LS_REPO}\" \
+          --label \"org.opencontainers.image.source=https://github.com/linuxserver/${LS_REPO}\" \
           --label \"org.opencontainers.image.version=${EXT_RELEASE_CLEAN}-ls${LS_TAG_NUMBER}\" \
           --label \"org.opencontainers.image.revision=${COMMIT_SHA}\" \
           --label \"org.opencontainers.image.vendor=linuxserver.io\" \
           --label \"org.opencontainers.image.licenses=GPL-3.0-only\" \
           --label \"org.opencontainers.image.ref.name=${COMMIT_SHA}\" \
-          --label \"org.opencontainers.image.title=\"Google Chrome\"\" \
-          --label \"org.opencontainers.image.description=[Google Chrome](https://www.google.com/chrome/) is a web browser developed by Google. This container provides a way to run Google Chrome seamlessly. The arm64v8 version uses Chromium due to Google Chrome not being officially available for this architecture.\" \
+          --label \"org.opencontainers.image.title=Google Chrome\" \
+          --label \"org.opencontainers.image.description=[Google Chrome](https://www.google.com/chrome/) is provided on amd64. This image (linuxserver/chromium), built from the docker-google-chrome repository, uses Google Chrome on amd64 and Chromium on arm64v8 for compatibility.\" \
           --no-cache --pull -t ${IMAGE}:${META_TAG} --platform=linux/amd64 \
           --provenance=true --sbom=true --builder=container --load \
           --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${VERSION_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
@@ -640,16 +640,16 @@ pipeline {
             sh "docker buildx build \
               --label \"org.opencontainers.image.created=${GITHUB_DATE}\" \
               --label \"org.opencontainers.image.authors=linuxserver.io\" \
-              --label \"org.opencontainers.image.url=https://github.com/linuxserver/docker-google-chrome/packages\" \
-              --label \"org.opencontainers.image.documentation=https://docs.linuxserver.io/images/docker-google-chrome\" \
-              --label \"org.opencontainers.image.source=https://github.com/linuxserver/docker-google-chrome\" \
+              --label \"org.opencontainers.image.url=https://github.com/linuxserver/${LS_REPO}/packages\" \
+              --label \"org.opencontainers.image.documentation=https://docs.linuxserver.io/images/${LS_REPO}\" \
+              --label \"org.opencontainers.image.source=https://github.com/linuxserver/${LS_REPO}\" \
               --label \"org.opencontainers.image.version=${EXT_RELEASE_CLEAN}-ls${LS_TAG_NUMBER}\" \
               --label \"org.opencontainers.image.revision=${COMMIT_SHA}\" \
               --label \"org.opencontainers.image.vendor=linuxserver.io\" \
               --label \"org.opencontainers.image.licenses=GPL-3.0-only\" \
               --label \"org.opencontainers.image.ref.name=${COMMIT_SHA}\" \
-              --label \"org.opencontainers.image.title=\"Google Chrome\"\" \
-              --label \"org.opencontainers.image.description=[Google Chrome](https://www.google.com/chrome/) is a web browser developed by Google. This container provides a way to run Google Chrome seamlessly. The arm64v8 version uses Chromium due to Google Chrome not being officially available for this architecture.\" \
+              --label \"org.opencontainers.image.title=Google Chrome\" \
+              --label \"org.opencontainers.image.description=[Google Chrome](https://www.google.com/chrome/) is provided on amd64. This image (linuxserver/chromium), built from the docker-google-chrome repository, uses Google Chrome on amd64 and Chromium on arm64v8 for compatibility.\" \
               --no-cache --pull -t ${IMAGE}:amd64-${META_TAG} --platform=linux/amd64 \
               --provenance=true --sbom=true --builder=container --load \
               --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${VERSION_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."
@@ -699,16 +699,16 @@ pipeline {
             sh "docker buildx build \
               --label \"org.opencontainers.image.created=${GITHUB_DATE}\" \
               --label \"org.opencontainers.image.authors=linuxserver.io\" \
-              --label \"org.opencontainers.image.url=https://github.com/linuxserver/docker-google-chrome/packages\" \
-              --label \"org.opencontainers.image.documentation=https://docs.linuxserver.io/images/docker-google-chrome\" \
-              --label \"org.opencontainers.image.source=https://github.com/linuxserver/docker-google-chrome\" \
+              --label \"org.opencontainers.image.url=https://github.com/linuxserver/${LS_REPO}/packages\" \
+              --label \"org.opencontainers.image.documentation=https://docs.linuxserver.io/images/${LS_REPO}\" \
+              --label \"org.opencontainers.image.source=https://github.com/linuxserver/${LS_REPO}\" \
               --label \"org.opencontainers.image.version=${EXT_RELEASE_CLEAN}-ls${LS_TAG_NUMBER}\" \
               --label \"org.opencontainers.image.revision=${COMMIT_SHA}\" \
               --label \"org.opencontainers.image.vendor=linuxserver.io\" \
               --label \"org.opencontainers.image.licenses=GPL-3.0-only\" \
               --label \"org.opencontainers.image.ref.name=${COMMIT_SHA}\" \
-              --label \"org.opencontainers.image.title=\"Google Chrome\"\" \
-              --label \"org.opencontainers.image.description=[Google Chrome](https://www.google.com/chrome/) is a web browser developed by Google. This container provides a way to run Google Chrome seamlessly. The arm64v8 version uses Chromium due to Google Chrome not being officially available for this architecture.\" \
+              --label \"org.opencontainers.image.title=Google Chrome\" \
+              --label \"org.opencontainers.image.description=[Google Chrome](https://www.google.com/chrome/) is provided on amd64. This image (linuxserver/chromium), built from the docker-google-chrome repository, uses Google Chrome on amd64 and Chromium on arm64v8 for compatibility.\" \
               --no-cache --pull -f Dockerfile.aarch64 -t ${IMAGE}:arm64v8-${META_TAG} --platform=linux/arm64 \
               --provenance=true --sbom=true --builder=container --load \
               --build-arg ${BUILD_VERSION_ARG}=${EXT_RELEASE} --build-arg VERSION=\"${VERSION_TAG}\" --build-arg BUILD_DATE=${GITHUB_DATE} ."

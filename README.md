@@ -33,13 +33,14 @@ Find us at:
 [![GitHub Release](https://img.shields.io/github/release/linuxserver/docker-google-chrome.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-google-chrome/releases)
 [![GitHub Package Repository](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitHub%20Package&logo=github)](https://github.com/linuxserver/docker-google-chrome/packages)
 [![GitLab Container Registry](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitLab%20Registry&logo=gitlab)](https://gitlab.com/linuxserver.io/docker-google-chrome/container_registry)
-[![Quay.io](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=Quay.io)](https://quay.io/repository/linuxserver.io/google-chrome)
-[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/google-chrome.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/google-chrome)
-[![Docker Stars](https://img.shields.io/docker/stars/linuxserver/google-chrome.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/linuxserver/google-chrome)
+[![Quay.io](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=Quay.io)](https://quay.io/repository/linuxserver.io/chromium)
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/chromium.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/chromium)
+[![Docker Stars](https://img.shields.io/docker/stars/linuxserver/chromium.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/linuxserver/chromium)
 [![Jenkins Build](https://img.shields.io/jenkins/build?labelColor=555555&logoColor=ffffff&style=for-the-badge&jobUrl=https%3A%2F%2Fci.linuxserver.io%2Fjob%2FDocker-Pipeline-Builders%2Fjob%2Fdocker-google-chrome%2Fjob%2Fmaster%2F&logo=jenkins)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-google-chrome/job/master/)
 [![LSIO CI](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=CI&query=CI&url=https%3A%2F%2Fci-tests.linuxserver.io%2Flinuxserver%2Fgoogle-chrome%2Flatest%2Fci-status.yml)](https://ci-tests.linuxserver.io/linuxserver/google-chrome/latest/index.html)
 
-[Google Chrome](https://www.google.com/chrome/) is a web browser developed by Google. This container provides a way to run Google Chrome seamlessly. The amd64 version uses Google Chrome, while the arm64v8 version uses Chromium as the underlying browser due to Google Chrome not being officially available for arm64, though the container aims for a consistent user experience.
+This repository, `linuxserver/docker-google-chrome`, builds the `lscr.io/linuxserver/chromium` Docker image.
+The `lscr.io/linuxserver/chromium:latest` image now provides [Google Chrome](https://www.google.com/chrome/) for the amd64 architecture and Chromium for the arm64v8 architecture. This change allows users to benefit from Google Chrome on supported platforms while maintaining arm64 compatibility via Chromium, all under the familiar `linuxserver/chromium` image tag.
 
 [![google-chrome](https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg)](https://www.google.com/chrome/)
 
@@ -47,7 +48,7 @@ Find us at:
 
 We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://distribution.github.io/distribution/spec/manifest-v2-2/#manifest-list) and our announcement [here](https://blog.linuxserver.io/2019/02/21/the-lsio-pipeline-project/).
 
-Simply pulling `lscr.io/linuxserver/google-chrome:latest` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
+Simply pulling `lscr.io/linuxserver/chromium:latest` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
 
 The architectures supported by this image are:
 
@@ -156,8 +157,8 @@ And to assign the GPU in compose:
 
 ```
 services:
-  google-chrome:
-    image: lscr.io/linuxserver/google-chrome:latest
+  chromium:
+    image: lscr.io/linuxserver/chromium:latest
     deploy:
       resources:
         reservations:
@@ -201,9 +202,9 @@ To help you get started creating a container from this image you can either use 
 ```yaml
 ---
 services:
-  google-chrome:
-    image: lscr.io/linuxserver/google-chrome:latest
-    container_name: google-chrome
+  chromium:
+    image: lscr.io/linuxserver/chromium:latest
+    container_name: chromium
     security_opt:
       - seccomp:unconfined #optional
     environment:
@@ -224,7 +225,7 @@ services:
 
 ```bash
 docker run -d \
-  --name=google-chrome \
+  --name=chromium \
   --security-opt seccomp=unconfined `#optional` \
   -e PUID=1000 \
   -e PGID=1000 \
@@ -235,7 +236,7 @@ docker run -d \
   -v /path/to/config:/config \
   --shm-size="1gb" \
   --restart unless-stopped \
-  lscr.io/linuxserver/google-chrome:latest
+  lscr.io/linuxserver/chromium:latest
 ```
 
 ## Parameters
@@ -244,12 +245,12 @@ Containers are configured using parameters passed at runtime (such as those abov
 
 | Parameter | Function |
 | :----: | --- |
-| `-p 3000:3000` | Google Chrome desktop gui. |
-| `-p 3001:3001` | HTTPS Google Chrome desktop gui. |
+| `-p 3000:3000` | Google Chrome/Chromium desktop gui. |
+| `-p 3001:3001` | HTTPS Google Chrome/Chromium desktop gui. |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
 | `-e TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
-| `-e CHROME_CLI=https://www.linuxserver.io/` | Specify one or multiple CLI flags for the browser (Google Chrome on amd64, Chromium on arm64v8). This string will be passed to the application in full. |
+| `-e CHROME_CLI=https://www.linuxserver.io/` | Specify one or multiple browser CLI flags (Google Chrome on amd64, Chromium on arm64) for the `lscr.io/linuxserver/chromium` image. This string will be passed to the application in full. |
 | `-v /config` | Users home directory in the container, stores local files and settings for the browser. |
 | `--shm-size=` | This is needed for any modern website to function like youtube. |
 | `--security-opt seccomp=unconfined` | For Docker Engine only, many modern gui apps need this to function on older hosts as syscalls are unknown to Docker. The browser runs in no-sandbox test mode without it. |
@@ -291,7 +292,7 @@ uid=1000(your_user) gid=1000(your_user) groups=1000(your_user)
 
 ## Docker Mods
 
-[![Docker Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=google-chrome&query=%24.mods%5B%27google-chrome%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=google-chrome "view available mods for this container.") [![Docker Universal Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=universal&query=%24.mods%5B%27universal%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=universal "view available universal mods.")
+[![Docker Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=chromium&query=%24.mods%5B%27chromium%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=chromium "view available mods for this container.") [![Docker Universal Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=universal&query=%24.mods%5B%27universal%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=universal "view available universal mods.")
 
 We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to enable additional functionality within the containers. The list of Mods available for this image (if any) as well as universal mods that can be applied to any one of our images can be accessed via the dynamic badges above.
 
@@ -300,25 +301,25 @@ We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to 
 * Shell access whilst the container is running:
 
     ```bash
-    docker exec -it google-chrome /bin/bash
+    docker exec -it chromium /bin/bash
     ```
 
 * To monitor the logs of the container in realtime:
 
     ```bash
-    docker logs -f google-chrome
+    docker logs -f chromium
     ```
 
 * Container version number:
 
     ```bash
-    docker inspect -f '{{ index .Config.Labels "build_version" }}' google-chrome
+    docker inspect -f '{{ index .Config.Labels "build_version" }}' chromium
     ```
 
 * Image version number:
 
     ```bash
-    docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/google-chrome:latest
+    docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/chromium:latest
     ```
 
 ## Updating Info
@@ -339,7 +340,7 @@ Below are the instructions for updating containers:
     * Single image:
 
         ```bash
-        docker-compose pull google-chrome
+        docker-compose pull chromium
         ```
 
 * Update containers:
@@ -352,7 +353,7 @@ Below are the instructions for updating containers:
     * Single container:
 
         ```bash
-        docker-compose up -d google-chrome
+        docker-compose up -d chromium
         ```
 
 * You can also remove the old dangling images:
@@ -366,19 +367,19 @@ Below are the instructions for updating containers:
 * Update the image:
 
     ```bash
-    docker pull lscr.io/linuxserver/google-chrome:latest
+    docker pull lscr.io/linuxserver/chromium:latest
     ```
 
 * Stop the running container:
 
     ```bash
-    docker stop google-chrome
+    docker stop chromium
     ```
 
 * Delete the container:
 
     ```bash
-    docker rm google-chrome
+    docker rm chromium
     ```
 
 * Recreate a new container with the same docker run parameters as instructed above (if mapped correctly to a host folder, your `/config` folder and settings will be preserved)
@@ -403,7 +404,7 @@ cd docker-google-chrome
 docker build \
   --no-cache \
   --pull \
-  -t lscr.io/linuxserver/google-chrome:latest .
+  -t lscr.io/linuxserver/chromium:latest .
 ```
 
 The ARM variants can be built on x86_64 hardware and vice versa using `lscr.io/linuxserver/qemu-static`
@@ -416,6 +417,7 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
+* **XX.XX.XX:** - Update linuxserver/chromium image (via docker-google-chrome repo) to use Google Chrome on amd64 and Chromium on arm64. Updated wrapper script and documentation.
 * **XX.XX.XX:** - Replace Chromium with Google Chrome on amd64; arm64 continues with Chromium backend. Update wrapper script and documentation.
 * **03.04.25:** - Update chromium launch options to improve performance.
 * **10.02.24:** - Update Readme with new env vars and ingest proper PWA icon.
