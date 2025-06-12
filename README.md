@@ -26,36 +26,9 @@ Find us at:
 * [GitHub](https://github.com/linuxserver) - view the source for all of our repositories.
 * [Open Collective](https://opencollective.com/linuxserver) - please consider helping us by either donating or contributing to our budget
 
-# [linuxserver/chromium](https://github.com/linuxserver/docker-chromium)
+# Google Chrome Docker
 
-[![Scarf.io pulls](https://scarf.sh/installs-badge/linuxserver-ci/linuxserver%2Fchromium?color=94398d&label-color=555555&logo-color=ffffff&style=for-the-badge&package-type=docker)](https://scarf.sh)
-[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-chromium.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-chromium)
-[![GitHub Release](https://img.shields.io/github/release/linuxserver/docker-chromium.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-chromium/releases)
-[![GitHub Package Repository](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitHub%20Package&logo=github)](https://github.com/linuxserver/docker-chromium/packages)
-[![GitLab Container Registry](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=GitLab%20Registry&logo=gitlab)](https://gitlab.com/linuxserver.io/docker-chromium/container_registry)
-[![Quay.io](https://img.shields.io/static/v1.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=linuxserver.io&message=Quay.io)](https://quay.io/repository/linuxserver.io/chromium)
-[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/chromium.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/chromium)
-[![Docker Stars](https://img.shields.io/docker/stars/linuxserver/chromium.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=stars&logo=docker)](https://hub.docker.com/r/linuxserver/chromium)
-[![Jenkins Build](https://img.shields.io/jenkins/build?labelColor=555555&logoColor=ffffff&style=for-the-badge&jobUrl=https%3A%2F%2Fci.linuxserver.io%2Fjob%2FDocker-Pipeline-Builders%2Fjob%2Fdocker-chromium%2Fjob%2Fmaster%2F&logo=jenkins)](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-chromium/job/master/)
-[![LSIO CI](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=CI&query=CI&url=https%3A%2F%2Fci-tests.linuxserver.io%2Flinuxserver%2Fchromium%2Flatest%2Fci-status.yml)](https://ci-tests.linuxserver.io/linuxserver/chromium/latest/index.html)
-
-[Chromium](https://www.chromium.org/chromium-projects/) is an open-source browser project that aims to build a safer, faster, and more stable way for all users to experience the web.
-
-[![chromium](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/chromium-logo.png)](https://www.chromium.org/chromium-projects/)
-
-## Supported Architectures
-
-We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://distribution.github.io/distribution/spec/manifest-v2-2/#manifest-list) and our announcement [here](https://blog.linuxserver.io/2019/02/21/the-lsio-pipeline-project/).
-
-Simply pulling `lscr.io/linuxserver/chromium:latest` should retrieve the correct image for your arch, but you can also pull specific arch images via tags.
-
-The architectures supported by this image are:
-
-| Architecture | Available | Tag |
-| :----: | :----: | ---- |
-| x86-64 | ✅ | amd64-\<version tag\> |
-| arm64 | ✅ | arm64v8-\<version tag\> |
-| armhf | ❌ | |
+This repository provides a Dockerfile to build a Docker container for [Google Chrome](https://www.google.com/chrome/), allowing you to run the browser in an isolated desktop environment via a web interface.
 
 ## Application Setup
 
@@ -156,8 +129,8 @@ And to assign the GPU in compose:
 
 ```
 services:
-  chromium:
-    image: lscr.io/linuxserver/chromium:latest
+  google-chrome:
+    build: .
     deploy:
       resources:
         reservations:
@@ -191,6 +164,8 @@ It is possible to install extra packages during container start using [universal
 
 ## Usage
 
+The recommended `docker-compose` method described below is for building the Docker image from the source files in this repository. Pre-built images, which can be pulled directly, are also typically available from LinuxServer.io through Docker Hub and other registries (as indicated by the badges and links at the top of this document).
+
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
 >[!NOTE]
@@ -201,9 +176,9 @@ To help you get started creating a container from this image you can either use 
 ```yaml
 ---
 services:
-  chromium:
-    image: lscr.io/linuxserver/chromium:latest
-    container_name: chromium
+  google-chrome:
+    build: .
+    container_name: google-chrome
     security_opt:
       - seccomp:unconfined #optional
     environment:
@@ -220,39 +195,21 @@ services:
     restart: unless-stopped
 ```
 
-### docker cli ([click here for more info](https://docs.docker.com/engine/reference/commandline/cli/))
-
-```bash
-docker run -d \
-  --name=chromium \
-  --security-opt seccomp=unconfined `#optional` \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Etc/UTC \
-  -e CHROME_CLI=https://www.linuxserver.io/ `#optional` \
-  -p 3000:3000 \
-  -p 3001:3001 \
-  -v /path/to/config:/config \
-  --shm-size="1gb" \
-  --restart unless-stopped \
-  lscr.io/linuxserver/chromium:latest
-```
-
 ## Parameters
 
 Containers are configured using parameters passed at runtime (such as those above). These parameters are separated by a colon and indicate `<external>:<internal>` respectively. For example, `-p 8080:80` would expose port `80` from inside the container to be accessible from the host's IP on port `8080` outside the container.
 
 | Parameter | Function |
 | :----: | --- |
-| `-p 3000:3000` | Chromium desktop gui. |
-| `-p 3001:3001` | HTTPS Chromium desktop gui. |
+| `-p 3000:3000` | Google Chrome desktop gui. |
+| `-p 3001:3001` | HTTPS Google Chrome desktop gui. |
 | `-e PUID=1000` | for UserID - see below for explanation |
 | `-e PGID=1000` | for GroupID - see below for explanation |
 | `-e TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List). |
-| `-e CHROME_CLI=https://www.linuxserver.io/` | Specify one or multiple Chromium CLI flags, this string will be passed to the application in full. |
+| `-e CHROME_CLI=https://www.linuxserver.io/` | Specify one or multiple Google Chrome CLI flags, this string will be passed to the application in full. |
 | `-v /config` | Users home directory in the container, stores local files and settings |
 | `--shm-size=` | This is needed for any modern website to function like youtube. |
-| `--security-opt seccomp=unconfined` | For Docker Engine only, many modern gui apps need this to function on older hosts as syscalls are unknown to Docker. Chromium runs in no-sandbox test mode without it. |
+| `--security-opt seccomp=unconfined` | For Docker Engine only, many modern gui apps need this to function on older hosts as syscalls are unknown to Docker. Google Chrome runs in no-sandbox test mode without it. |
 
 ## Environment variables from files (Docker secrets)
 
@@ -291,7 +248,7 @@ uid=1000(your_user) gid=1000(your_user) groups=1000(your_user)
 
 ## Docker Mods
 
-[![Docker Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=chromium&query=%24.mods%5B%27chromium%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=chromium "view available mods for this container.") [![Docker Universal Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=universal&query=%24.mods%5B%27universal%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=universal "view available universal mods.")
+[![Docker Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=google-chrome&query=%24.mods%5B%27chromium%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=chromium "view available mods for this container.") [![Docker Universal Mods](https://img.shields.io/badge/dynamic/yaml?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=universal&query=%24.mods%5B%27universal%27%5D.mod_count&url=https%3A%2F%2Fraw.githubusercontent.com%2Flinuxserver%2Fdocker-mods%2Fmaster%2Fmod-list.yml)](https://mods.linuxserver.io/?mod=universal "view available universal mods.")
 
 We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to enable additional functionality within the containers. The list of Mods available for this image (if any) as well as universal mods that can be applied to any one of our images can be accessed via the dynamic badges above.
 
@@ -300,26 +257,23 @@ We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to 
 * Shell access whilst the container is running:
 
     ```bash
-    docker exec -it chromium /bin/bash
+    docker exec -it google-chrome /bin/bash
     ```
 
 * To monitor the logs of the container in realtime:
 
     ```bash
-    docker logs -f chromium
+    docker logs -f google-chrome
     ```
 
 * Container version number:
 
     ```bash
-    docker inspect -f '{{ index .Config.Labels "build_version" }}' chromium
+    docker inspect -f '{{ index .Config.Labels "build_version" }}' google-chrome
     ```
 
 * Image version number:
-
-    ```bash
-    docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/chromium:latest
-    ```
+            Since this README focuses on building the image from source, the version typically corresponds to the version of Google Chrome installed by the `Dockerfile` at the time you build it, or the commit/tag of this Git repository that you are using. You can also check the build log or inspect the locally built image (e.g., `docker inspect -f '{{ index .Config.Labels "build_version" }}' google-chrome:latest` if you tagged it as `google-chrome:latest` during a manual build, or the image ID if built via `docker-compose build` without explicit tagging in the compose file).
 
 ## Updating Info
 
@@ -329,69 +283,27 @@ Below are the instructions for updating containers:
 
 ### Via Docker Compose
 
-* Update images:
-    * All images:
+When using the `docker-compose.yml` with `build: .`, updates are typically managed by fetching the latest changes from the Git repository and then rebuilding your local image.
 
-        ```bash
-        docker-compose pull
-        ```
+*   Fetch the latest changes for the repository:
+    ```bash
+    git pull
+    ```
 
-    * Single image:
+*   Then, rebuild the image and recreate the container. You can do this in one step:
+    ```bash
+    docker-compose up -d --build
+    ```
+    Alternatively, you can build separately and then bring the services up:
+    ```bash
+    docker-compose build
+    docker-compose up -d
+    ```
 
-        ```bash
-        docker-compose pull chromium
-        ```
-
-* Update containers:
-    * All containers:
-
-        ```bash
-        docker-compose up -d
-        ```
-
-    * Single container:
-
-        ```bash
-        docker-compose up -d chromium
-        ```
-
-* You can also remove the old dangling images:
-
+*   You can also remove old dangling images after updating:
     ```bash
     docker image prune
     ```
-
-### Via Docker Run
-
-* Update the image:
-
-    ```bash
-    docker pull lscr.io/linuxserver/chromium:latest
-    ```
-
-* Stop the running container:
-
-    ```bash
-    docker stop chromium
-    ```
-
-* Delete the container:
-
-    ```bash
-    docker rm chromium
-    ```
-
-* Recreate a new container with the same docker run parameters as instructed above (if mapped correctly to a host folder, your `/config` folder and settings will be preserved)
-* You can also remove the old dangling images:
-
-    ```bash
-    docker image prune
-    ```
-
-### Image Update Notifications - Diun (Docker Image Update Notifier)
-
->[!TIP]
->We recommend [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended or supported.
 
 ## Building locally
 
@@ -400,11 +312,15 @@ If you want to make local modifications to these images for development purposes
 ```bash
 git clone https://github.com/linuxserver/docker-chromium.git
 cd docker-chromium
+```
+If you are using the `docker-compose.yml` example from the Usage section (which includes `build: .`), Docker Compose will handle building the image for you when you run `docker-compose up --build` or `docker-compose build`. The `docker build` command below is for building the Docker image directly without Docker Compose.
+```bash
 docker build \
   --no-cache \
   --pull \
-  -t lscr.io/linuxserver/chromium:latest .
+  -t google-chrome:latest .
 ```
+For development, you can also integrate this build into a `docker-compose.override.yml` if you are using docker-compose for your development environment, or simply run `docker-compose build servicename` if you have a `docker-compose.yml` that defines the build context for this image.
 
 The ARM variants can be built on x86_64 hardware and vice versa using `lscr.io/linuxserver/qemu-static`
 
@@ -416,10 +332,10 @@ Once registered you can define the dockerfile to use with `-f Dockerfile.aarch64
 
 ## Versions
 
-* **03.04.25:** - Update chromium launch options to improve performance.
+* **03.04.25:** - Update Google Chrome launch options to improve performance.
 * **10.02.24:** - Update Readme with new env vars and ingest proper PWA icon.
-* **08.01.24:** - Fix re-launch issue for chromium by purging temp files on launch.
+* **08.01.24:** - Fix re-launch issue for Google Chrome by purging temp files on launch.
 * **29.12.23:** - Rebase to Debian Bookworm.
 * **13.05.23:** - Rebase to Alpine 3.18.
-* **01.04.23:** - Preserve arguments passed to Chromium and restructure to use wrapper.
+* **01.04.23:** - Preserve arguments passed to Google Chrome and restructure to use wrapper.
 * **18.03.23:** - Initial release.
