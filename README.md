@@ -191,6 +191,8 @@ It is possible to install extra packages during container start using [universal
 
 ## Usage
 
+The recommended `docker-compose` method described below is for building the Docker image from the source files in this repository. Pre-built images, which can be pulled directly, are also typically available from LinuxServer.io through Docker Hub and other registries (as indicated by the badges and links at the top of this document).
+
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
 
 >[!NOTE]
@@ -202,7 +204,7 @@ To help you get started creating a container from this image you can either use 
 ---
 services:
   chromium:
-    image: lscr.io/linuxserver/chromium:latest
+    build: .
     container_name: chromium
     security_opt:
       - seccomp:unconfined #optional
@@ -298,10 +300,16 @@ We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to 
     ```
 
 * Image version number:
-
-    ```bash
-    docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/chromium:latest
-    ```
+    * For pre-built images pulled from a registry:
+      ```bash
+      docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/chromium:latest
+      ```
+    * For images built locally using the `docker-compose.yml` example (which uses `build: .`):
+      You can inspect the image that Compose builds. First, find the image ID or name (e.g., using `docker images | grep chromium` or by looking at the output of `docker-compose build`). If your compose service is named `chromium`, the image might be named `chromium_chromium` or similar by default, or use the `container_name` if you also specify that under an `image:` key in a compose override for tagging. Then inspect it using its ID or tag:
+      ```bash
+      docker inspect -f '{{ index .Config.Labels "build_version" }}' <your_locally_built_image_tag_or_id>
+      ```
+      Alternatively, the version corresponds to the state of the Git repository you built from.
 
 ## Updating Info
 
@@ -311,34 +319,24 @@ Below are the instructions for updating containers:
 
 ### Via Docker Compose
 
-* Update images:
-    * All images:
+When using the `docker-compose.yml` with `build: .`, updates are typically managed by fetching the latest changes from the Git repository and then rebuilding your local image.
 
-        ```bash
-        docker-compose pull
-        ```
+*   Fetch the latest changes for the repository:
+    ```bash
+    git pull
+    ```
 
-    * Single image:
+*   Then, rebuild the image and recreate the container. You can do this in one step:
+    ```bash
+    docker-compose up -d --build
+    ```
+    Alternatively, you can build separately and then bring the services up:
+    ```bash
+    docker-compose build
+    docker-compose up -d
+    ```
 
-        ```bash
-        docker-compose pull chromium
-        ```
-
-* Update containers:
-    * All containers:
-
-        ```bash
-        docker-compose up -d
-        ```
-
-    * Single container:
-
-        ```bash
-        docker-compose up -d chromium
-        ```
-
-* You can also remove the old dangling images:
-
+*   You can also remove old dangling images after updating:
     ```bash
     docker image prune
     ```
@@ -382,6 +380,9 @@ If you want to make local modifications to these images for development purposes
 ```bash
 git clone https://github.com/linuxserver/docker-chromium.git
 cd docker-chromium
+```
+If you are using the `docker-compose.yml` example from the Usage section (which includes `build: .`), Docker Compose will handle building the image for you when you run `docker-compose up --build` or `docker-compose build`. The `docker build` command below is for building the Docker image directly without Docker Compose.
+```bash
 docker build \
   --no-cache \
   --pull \
