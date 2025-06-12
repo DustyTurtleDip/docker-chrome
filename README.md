@@ -220,24 +220,6 @@ services:
     restart: unless-stopped
 ```
 
-### docker cli ([click here for more info](https://docs.docker.com/engine/reference/commandline/cli/))
-
-```bash
-docker run -d \
-  --name=chromium \
-  --security-opt seccomp=unconfined `#optional` \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Etc/UTC \
-  -e CHROME_CLI=https://www.linuxserver.io/ `#optional` \
-  -p 3000:3000 \
-  -p 3001:3001 \
-  -v /path/to/config:/config \
-  --shm-size="1gb" \
-  --restart unless-stopped \
-  lscr.io/linuxserver/chromium:latest
-```
-
 ## Parameters
 
 Containers are configured using parameters passed at runtime (such as those above). These parameters are separated by a colon and indicate `<external>:<internal>` respectively. For example, `-p 8080:80` would expose port `80` from inside the container to be accessible from the host's IP on port `8080` outside the container.
@@ -405,6 +387,7 @@ docker build \
   --pull \
   -t lscr.io/linuxserver/chromium:latest .
 ```
+For development, you can also integrate this build into a `docker-compose.override.yml` if you are using docker-compose for your development environment, or simply run `docker-compose build servicename` if you have a `docker-compose.yml` that defines the build context for this image.
 
 The ARM variants can be built on x86_64 hardware and vice versa using `lscr.io/linuxserver/qemu-static`
 
