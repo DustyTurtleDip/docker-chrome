@@ -7,26 +7,18 @@ LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DA
 LABEL maintainer="thelamer"
 
 # title
-ENV TITLE="Google Chrome"
+ENV TITLE=Chromium
 
 RUN \
   echo "**** add icon ****" && \
   curl -o \
     /kclient/public/icon.png \
-    https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg && \
-  echo "**** install prerequisites ****" && \
+    https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/chromium-logo.png && \
+  echo "**** install packages ****" && \
   apt-get update && \
   apt-get install -y --no-install-recommends \
-    wget \
-    gpg \
-    software-properties-common && \
-  echo "**** add google chrome repository ****" && \
-  wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-chrome-keyring.gpg && \
-  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-  echo "**** install google-chrome-stable ****" && \
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-    google-chrome-stable && \
+    chromium \
+    chromium-l10n && \
   echo "**** cleanup ****" && \
   apt-get autoclean && \
   rm -rf \
