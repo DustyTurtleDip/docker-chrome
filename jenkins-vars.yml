@@ -1,16 +1,16 @@
 ---
 
 # jenkins variables
-project_name: docker-google-chrome
+project_name: docker-chromium
 external_type: os
 release_type: stable
 release_tag: latest
 ls_branch: master
 build_armhf: false
 repo_vars:
-  - BUILD_VERSION_ARG = 'BROWSER_VERSION'
+  - BUILD_VERSION_ARG = 'CHROMIUM_VERSION'
   - LS_USER = 'linuxserver'
-  - LS_REPO = 'docker-google-chrome'
+  - LS_REPO = 'docker-chromium'
   - CONTAINER_NAME = 'chromium'
   - DOCKERHUB_IMAGE = 'linuxserver/chromium'
   - DEV_DOCKERHUB_IMAGE = 'lsiodev/chromium'
