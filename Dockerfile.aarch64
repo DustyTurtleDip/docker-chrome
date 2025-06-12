@@ -41,6 +41,9 @@ RUN \
 # add local files
 COPY /root /
 
+# Create symlink for backward compatibility or unexpected calls
+RUN ln -s /usr/bin/wrapped-browser /usr/bin/wrapped-chromium
+
 # ports and volumes
 EXPOSE 3000
 
